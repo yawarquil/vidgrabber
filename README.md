@@ -2,7 +2,7 @@
 
 A modern, privacy-focused web application for downloading videos from 1000+ sites using yt-dlp.
 
-![VidGrabber Preview](https://via.placeholder.com/800x450/0a0a0f/00d4ff?text=VidGrabber)
+![VidGrabber Preview](preview.png)
 
 ## ✨ Features
 
