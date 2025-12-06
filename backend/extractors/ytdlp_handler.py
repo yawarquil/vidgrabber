@@ -221,8 +221,37 @@ class YTDLPHandler:
         url_lower = url.lower()
         
         if 'youtube.com' in url_lower or 'youtu.be' in url_lower:
-            # YouTube strategies - android client provides best format availability
+            # YouTube strategies for cloud servers
+            # Use multiple player clients to bypass sign-in requirements
             strategies = [
+                ('YouTube Web Client', {
+                    'extractor_args': {
+                        'youtube': {
+                            'player_client': ['web'],
+                        }
+                    }
+                }),
+                ('YouTube Android Client', {
+                    'extractor_args': {
+                        'youtube': {
+                            'player_client': ['android'],
+                        }
+                    }
+                }),
+                ('YouTube iOS Client', {
+                    'extractor_args': {
+                        'youtube': {
+                            'player_client': ['ios'],
+                        }
+                    }
+                }),
+                ('YouTube TV Embedded', {
+                    'extractor_args': {
+                        'youtube': {
+                            'player_client': ['tv_embedded'],
+                        }
+                    }
+                }),
                 ('YouTube Default', {}),
             ]
         elif 'instagram.com' in url_lower or 'instagr.am' in url_lower:
