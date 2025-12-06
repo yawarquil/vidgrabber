@@ -14,6 +14,46 @@ class DownloadResult:
         self.error = error
 
 
+async def try_youtube_dl(url: str) -> DownloadResult:
+    """
+    Try youtube-dl - original YouTube downloader (slower but stable)
+    """
+    try:
+        def _run():
+            result = subprocess.run(
+                ['youtube-dl', '--dump-json', '--no-download', url],
+                capture_output=True,
+                timeout=60,
+                text=True
+            )
+            return result
+        
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, _run)
+        
+        if result.returncode == 0:
+            try:
+                data = json.loads(result.stdout)
+                return DownloadResult(True, data={
+                    'title': data.get('title', 'Unknown'),
+                    'extractor': 'youtube-dl',
+                    'formats': data.get('formats', []),
+                    'thumbnail': data.get('thumbnail'),
+                    'duration': data.get('duration')
+                })
+            except json.JSONDecodeError:
+                return DownloadResult(False, error="Failed to parse youtube-dl output")
+        
+        return DownloadResult(False, error=result.stderr or "youtube-dl extraction failed")
+    
+    except subprocess.TimeoutExpired:
+        return DownloadResult(False, error="youtube-dl timed out")
+    except FileNotFoundError:
+        return DownloadResult(False, error="youtube-dl not installed")
+    except Exception as e:
+        return DownloadResult(False, error=f"youtube-dl error: {str(e)}")
+
+
 async def try_youget(url: str) -> DownloadResult:
     """
     Try You-Get - good for Bilibili, Vimeo, and Chinese platforms
@@ -21,7 +61,7 @@ async def try_youget(url: str) -> DownloadResult:
     try:
         def _run():
             result = subprocess.run(
-                ['python', '-m', 'you_get', '--json', url],
+                ['you-get', '--json', url],
                 capture_output=True,
                 timeout=30,
                 text=True
@@ -100,7 +140,7 @@ async def try_gallery_dl(url: str) -> DownloadResult:
     try:
         def _run():
             result = subprocess.run(
-                ['python', '-m', 'gallery_dl', '--no-download', '--dump-json', url],
+                ['gallery-dl', '--no-download', '--dump-json', url],
                 capture_output=True,
                 timeout=30,
                 text=True
@@ -135,17 +175,78 @@ async def try_gallery_dl(url: str) -> DownloadResult:
         return DownloadResult(False, error=f"gallery-dl error: {str(e)}")
 
 
+async def try_lux(url: str) -> DownloadResult:
+    """
+    Try lux (formerly annie) - Go-based, good for Bilibili, YouTube, Twitter
+    """
+    try:
+        def _run():
+            result = subprocess.run(
+                ['lux', '-j', url],
+                capture_output=True,
+                timeout=30,
+                text=True
+            )
+            return result
+        
+        loop = asyncio.get_event_loop()
+        result = await loop.run_in_executor(None, _run)
+        
+        if result.returncode == 0:
+            try:
+                data = json.loads(result.stdout)
+                if isinstance(data, list) and len(data) > 0:
+                    first = data[0]
+                    return DownloadResult(True, data={
+                        'title': first.get('title', 'Unknown'),
+                        'extractor': 'lux',
+                        'site': first.get('site', 'Unknown'),
+                        'streams': first.get('streams', {})
+                    })
+            except json.JSONDecodeError:
+                return DownloadResult(False, error="Failed to parse lux output")
+        
+        return DownloadResult(False, error=result.stderr or "lux extraction failed")
+    
+    except subprocess.TimeoutExpired:
+        return DownloadResult(False, error="lux timed out")
+    except FileNotFoundError:
+        return DownloadResult(False, error="lux not installed")
+    except Exception as e:
+        return DownloadResult(False, error=f"lux error: {str(e)}")
+
+
 async def try_fallback_extractors(url: str) -> DownloadResult:
     """
     Try alternative extractors in sequence when yt-dlp fails
     """
     print(f"🔄 Trying fallback extractors for: {url}")
     
+    # Check if it's a YouTube URL - try youtube-dl first
+    is_youtube = 'youtube.com' in url.lower() or 'youtu.be' in url.lower()
+    
+    if is_youtube:
+        # Try youtube-dl first for YouTube
+        print("  → Trying youtube-dl...")
+        result = await try_youtube_dl(url)
+        if result.success:
+            print("  ✅ Success with youtube-dl!")
+            return result
+        print(f"  ✗ youtube-dl failed: {result.error}")
+    
+    # Try lux
+    print("  → Trying lux...")
+    result = await try_lux(url)
+    if result.success:
+        print("  ✅ Success with lux!")
+        return result
+    print(f"  ✗ lux failed: {result.error}")
+    
     # Try you-get
     print("  → Trying you-get...")
     result = await try_youget(url)
     if result.success:
-        print(f"  ✅ Success with you-get!")
+        print("  ✅ Success with you-get!")
         return result
     print(f"  ✗ you-get failed: {result.error}")
     
@@ -153,7 +254,7 @@ async def try_fallback_extractors(url: str) -> DownloadResult:
     print("  → Trying streamlink...")
     result = await try_streamlink(url)
     if result.success:
-        print(f"  ✅ Success with streamlink!")
+        print("  ✅ Success with streamlink!")
         return result
     print(f"  ✗ streamlink failed: {result.error}")
     
@@ -161,8 +262,9 @@ async def try_fallback_extractors(url: str) -> DownloadResult:
     print("  → Trying gallery-dl...")
     result = await try_gallery_dl(url)
     if result.success:
-        print(f"  ✅ Success with gallery-dl!")
+        print("  ✅ Success with gallery-dl!")
         return result
     print(f"  ✗ gallery-dl failed: {result.error}")
     
     return DownloadResult(False, error="All fallback extractors failed")
+

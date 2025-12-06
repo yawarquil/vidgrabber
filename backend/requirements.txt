@@ -6,3 +6,9 @@ aiofiles==23.2.1
 pydantic==2.5.3
 websockets==12.0
 httpx>=0.27.0
+
+# Fallback video downloaders
+youtube-dl>=2021.12.17
+you-get>=0.4.1650
+gallery-dl>=1.27.0
+streamlink>=6.5.0
