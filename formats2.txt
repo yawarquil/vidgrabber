@@ -1,0 +1,79 @@
+[youtube] Extracting URL: https://www.youtube.com/watch?v=n6MCvGfDPKE
+[youtube] n6MCvGfDPKE: Downloading webpage
+python : WARNING: [youtube] 
+No supported JavaScript 
+runtime could be found. 
+YouTube extraction without 
+a JS runtime has been 
+deprecated, and some 
+formats may be missing. See 
+ https://github.com/yt-dlp/y
+t-dlp/wiki/EJS  for details 
+on installing one. To 
+silence this warning, you 
+can use  --extractor-args "y
+outube:player_client=default
+"
+At line:1 char:1
++ python test_formats.py 
+2>&1 | Out-File -Encoding 
+ASCII formats2.txt
++ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          
+    : NotSpecified: (WARNI  
+  NG: [youtu...client=def   
+ ault":String) [], Remot    
+eException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 
+[youtube] n6MCvGfDPKE: Downloading android sdkless player API JSON
+[youtube] n6MCvGfDPKE: Downloading web safari player API JSON
+WARNING: [youtube] 
+n6MCvGfDPKE: Some 
+web_safari client https 
+formats have been skipped 
+as they are missing a url. 
+YouTube is forcing SABR 
+streaming for this client. 
+See  https://github.com/yt-d
+lp/yt-dlp/issues/12482  for 
+more details
+[youtube] n6MCvGfDPKE: Downloading m3u8 information
+WARNING: [youtube] 
+n6MCvGfDPKE: Some web 
+client https formats have 
+been skipped as they are 
+missing a url. YouTube is 
+forcing SABR streaming for 
+this client. See  https://gi
+thub.com/yt-dlp/yt-dlp/issue
+s/12482  for more details
+WARNING: ffmpeg not found. 
+The downloaded format may 
+not be the best available. 
+Installing ffmpeg is 
+strongly recommended: https:
+//github.com/yt-dlp/yt-dlp#d
+ependencies
+
+Total formats: 29
+Video formats: 21
+
+Top formats:
+      95:  720p  mp4 v:avc1.4D401 a: mp4a.40.2    0.0MB
+     136:  720p  mp4 v:avc1.4d401 a:      none    7.4MB
+     247:  720p webm v:       vp9 a:      none   19.7MB
+     398:  720p  mp4 v:av01.0.05M a:      none   22.6MB
+      94:  480p  mp4 v:avc1.4D401 a: mp4a.40.2    0.0MB
+     135:  480p  mp4 v:avc1.4d401 a:      none    5.2MB
+     244:  480p webm v:       vp9 a:      none   12.3MB
+     397:  480p  mp4 v:av01.0.04M a:      none   13.2MB
+      93:  360p  mp4 v:avc1.4D401 a: mp4a.40.2    0.0MB
+     134:  360p  mp4 v:avc1.4d401 a:      none    4.3MB
+      18:  360p  mp4 v:avc1.42001 a: mp4a.40.2   25.8MB
+     243:  360p webm v:       vp9 a:      none    9.5MB
+     396:  360p  mp4 v:av01.0.01M a:      none    8.6MB
+      92:  240p  mp4 v:avc1.4D401 a: mp4a.40.5    0.0MB
+     133:  240p  mp4 v:avc1.4d401 a:      none    3.2MB

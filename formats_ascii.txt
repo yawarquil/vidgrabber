@@ -1,0 +1,67 @@
+[youtube] Extracting URL: https://www.youtube.com/watch?v=n6MCvGfDPKE
+[youtube] n6MCvGfDPKE: Downloading webpage
+[youtube] n6MCvGfDPKE: Downloading android player API JSON
+python : WARNING: [youtube] 
+n6MCvGfDPKE: android client 
+https formats require a GVS 
+PO Token which was not 
+provided. They will be 
+skipped as they may yield 
+HTTP Error 403. You can 
+manually pass a GVS PO 
+Token for this client with 
+--extractor-args "youtube:po
+_token=android.gvs+XXX". 
+For more information, refer 
+to  https://github.com/yt-dl
+p/yt-dlp/wiki/PO-Token-Guide
+At line:1 char:1
++ python test_formats.py 
+2>&1 | Out-File -Encoding 
+ASCII formats_ascii. ...
++ 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          
+    : NotSpecified: (WARNI  
+  NG: [youtu.../PO-Token-   
+ Guide:String) [], Remot    
+eException
+    + FullyQualifiedErrorId 
+    : NativeCommandError
+ 
+WARNING: [youtube] 
+n6MCvGfDPKE: Some web 
+client https formats have 
+been skipped as they are 
+missing a url. YouTube is 
+forcing SABR streaming for 
+this client. See  https://gi
+thub.com/yt-dlp/yt-dlp/issue
+s/12482  for more details
+Traceback (most recent call 
+last):
+  File "C:\Users\yawar\Deskt
+op\video downloader\test_for
+mats.py", line 18, in 
+<module>
+    print(f"\n\U0001f4ca 
+Total formats: 
+{len(formats)}")
+    ~~~~~^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\yawar\AppDa
+ta\Local\Programs\Python\Pyt
+hon313\Lib\encodings\cp1252.
+py", line 19, in encode
+    return codecs.charmap_en
+code(input,self.errors,encod
+ing_table)[0]
+           ~~~~~~~~~~~~~~~~~
+~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^
+UnicodeEncodeError: 
+'charmap' codec can't 
+encode character 
+'\U0001f4ca' in position 2: 
+character maps to 
+<undefined>

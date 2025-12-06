@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  vidgrabber:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+      - DOWNLOAD_DIR=/app/downloads
+    volumes:
+      - downloads:/app/downloads
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+volumes:
+  downloads:
+    driver: local
